@@ -25,20 +25,20 @@ public class FigureDaoBdd implements IFigureDao {
 	}
 
 	@Override
-	public List<Figure> getAllFigures() throws DaoException {
+	public List<Figure> getAllFigures() {
 		TypedQuery<Figure> query = DaoBddHelper.getEm().createNamedQuery("figures.getAllFigures", Figure.class);
 		return query.getResultList();
 	}
 
 	@Override
-	public Figure getFigureById(int FigureId) throws DaoException {
+	public Figure getFigureById(int FigureId) {
 		TypedQuery<Figure> query = DaoBddHelper.getEm().createNamedQuery("figures.getFigureById", Figure.class);
 		query.setParameter("id", FigureId);
 		return query.getSingleResult();
 	}
 
 	@Override
-	public List<Figure> getFiguresByIdUniverse(int IdUniverse) throws DaoException {
+	public List<Figure> getFiguresByIdUniverse(int IdUniverse) {
 		TypedQuery<Figure> query = DaoBddHelper.getEm().createNamedQuery("figures.getFiguresByIdUniverse",
 				Figure.class);
 		query.setParameter("id", IdUniverse);

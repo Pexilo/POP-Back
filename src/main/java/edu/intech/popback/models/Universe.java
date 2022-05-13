@@ -1,5 +1,6 @@
 package edu.intech.popback.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -24,19 +25,17 @@ public class Universe {
 
 	private int id;
 	private String name;
-	private List<Figure> figures;
+	private List<Figure> figures = new ArrayList<>();
 
 	public Universe() {
 	}
 
 	/**
 	 * @param name
-	 * @param figures
 	 */
-	public Universe(String name, List<Figure> figures) {
+	public Universe(String name) {
 		super();
 		this.name = name;
-		this.figures = figures;
 	}
 
 	@Id

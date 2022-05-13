@@ -9,11 +9,11 @@ public interface IFigureDao {
 
 	Figure createFigure(Figure f) throws DaoException;
 	
-	List<Figure> getAllFigures() throws DaoException;
+	List<Figure> getAllFigures();
 	
-	Figure getFigureById(int FigureId) throws DaoException;
+	Figure getFigureById(int FigureId);
 	
-	List<Figure> getFiguresByIdUniverse(int IdUniverse) throws DaoException;
+	List<Figure> getFiguresByIdUniverse(int IdUniverse);
 	
 	Figure updateFigure(Figure f) throws DaoException;
 	

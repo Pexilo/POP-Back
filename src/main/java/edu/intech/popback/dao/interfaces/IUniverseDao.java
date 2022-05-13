@@ -9,9 +9,9 @@ public interface IUniverseDao {
 	
 	Universe createUniverse(Universe u) throws DaoException;
 	
-	List<Universe> getAllUniverses() throws DaoException;
+	List<Universe> getAllUniverses();
 	
-	Universe getUniverseById(int UniverseId) throws DaoException;
+	Universe getUniverseById(int UniverseId);
 	
 	Universe updateUniverse(Universe u) throws DaoException;
 	

@@ -25,13 +25,13 @@ public class UniverseDaoBdd implements IUniverseDao {
 	}
 
 	@Override
-	public List<Universe> getAllUniverses() throws DaoException {
+	public List<Universe> getAllUniverses() {
 		TypedQuery<Universe> query = DaoBddHelper.getEm().createNamedQuery("universes.getAllUniverses", Universe.class);
 		return query.getResultList();
 	}
 
 	@Override
-	public Universe getUniverseById(int UniverseId) throws DaoException {
+	public Universe getUniverseById(int UniverseId) {
 		TypedQuery<Universe> query = DaoBddHelper.getEm().createNamedQuery("universes.getUniverseById", Universe.class);
 		query.setParameter("id", UniverseId);
 		return query.getSingleResult();

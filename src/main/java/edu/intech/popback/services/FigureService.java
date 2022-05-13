@@ -43,6 +43,19 @@ public class FigureService {
 
 		return Response.ok().entity(json).build();
 	}
+	
+	//Le resultat n'a aucun sens marche pas encore
+	@GET
+	@Path("/universe/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getFiguresByIdUniverse(@PathParam("id") int IdUniverse) throws DaoException {
+
+		List<Figure> figures = DaoFactory.getInstance().getFigureDao().getFiguresByIdUniverse(IdUniverse);
+		final GenericEntity<List<Figure>> json = new GenericEntity<>(figures) {
+		};
+
+		return Response.ok().entity(json).build();
+	}
 
 	@POST
 	@Path("/create")
@@ -79,7 +92,7 @@ public class FigureService {
 	@DELETE
 	@Path("/delete/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteMyUser(@PathParam("id") int FigureId) {
+	public Response deleteFigure(@PathParam("id") int FigureId) {
 
 		try {
 			Figure f = DaoFactory.getInstance().getFigureDao().getFigureById(FigureId);
