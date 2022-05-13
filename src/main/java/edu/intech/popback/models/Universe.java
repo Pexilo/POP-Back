@@ -9,19 +9,26 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "universes")
+@NamedQueries({
+	@NamedQuery(name = "universes.getAllUniverses", query = "SELECT u FROM Universe u"),
+	@NamedQuery(name = "universes.getUniverseById", query = "SELECT u FROM Universe u WHERE u.id=:id"),
+})
 public class Universe {
-	
+
 	private int id;
 	private String name;
 	private List<Figure> figures;
-	
-	public Universe() {}
-	
+
+	public Universe() {
+	}
+
 	/**
 	 * @param id
 	 * @param name
@@ -80,8 +87,15 @@ public class Universe {
 	public void setFigures(List<Figure> figures) {
 		this.figures = figures;
 	}
-
-
+	
+	//permet d'update la liste Figure
+	public void addFigure(Figure f) {
+		this.figures.add(f);
+	}
+	
+	public void removeFigure(Figure f) {
+		this.figures.remove(f);
+	}
 
 
 }

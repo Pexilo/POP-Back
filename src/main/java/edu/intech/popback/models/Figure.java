@@ -5,17 +5,25 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "figures")
+@NamedQueries({
+	@NamedQuery(name = "figures.getAllFigures", query = "SELECT f FROM Figure f"),
+	@NamedQuery(name = "figures.getByFigureId", query = "SELECT f FROM Figure f WHERE f.id=:id"),
+	@NamedQuery(name = "figures.getFiguresByIdUniverse", query = "SELECT f FROM Figure f JOIN Universe u WHERE u.id=:id")
+})
 public class Figure {
 
 	private int id;
 	private String name;
 	private int idUniverse;
 
-	public Figure() {}
+	public Figure() {
+	}
 
 	/**
 	 * @param id
@@ -74,5 +82,4 @@ public class Figure {
 	public void setIdUniverse(int idUniverse) {
 		this.idUniverse = idUniverse;
 	}
-
 }
