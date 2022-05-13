@@ -30,7 +30,6 @@ public class Universe {
 	}
 
 	/**
-	 * @param id
 	 * @param name
 	 * @param figures
 	 */

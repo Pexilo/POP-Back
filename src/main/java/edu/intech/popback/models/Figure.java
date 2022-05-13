@@ -26,7 +26,6 @@ public class Figure {
 	}
 
 	/**
-	 * @param id
 	 * @param name
 	 * @param idUniverse
 	 */
