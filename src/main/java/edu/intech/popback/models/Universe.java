@@ -25,6 +25,7 @@ public class Universe {
 
 	private int id;
 	private String name;
+	private String imageURL;
 	private List<Figure> figures = new ArrayList<>();
 
 	public Universe() {
@@ -33,9 +34,10 @@ public class Universe {
 	/**
 	 * @param name
 	 */
-	public Universe(String name) {
+	public Universe(String name, String imageURL) {
 		super();
 		this.name = name;
+		this.imageURL = imageURL;
 	}
 
 	/**
@@ -69,6 +71,21 @@ public class Universe {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @return the imageURL
+	 */
+	@Column(name = "image_url")
+	public String getImageURL() {
+		return imageURL;
+	}
+
+	/**
+	 * @param imageURL the imageURL to set
+	 */
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
 	}
 
 	/* L'univers a une liste de figurines, ces figurines doivent être recupérées avec

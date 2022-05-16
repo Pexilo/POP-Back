@@ -11,15 +11,14 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "figures")
-@NamedQueries({
-	@NamedQuery(name = "figures.getAllFigures", query = "SELECT f FROM Figure f"),
-	@NamedQuery(name = "figures.getFigureById", query = "SELECT f FROM Figure f WHERE f.id=:id"),
-	@NamedQuery(name = "figures.getFiguresByIdUniverse", query = "SELECT f FROM Figure f WHERE f.idUniverse = :id")
-})
+@NamedQueries({ @NamedQuery(name = "figures.getAllFigures", query = "SELECT f FROM Figure f"),
+		@NamedQuery(name = "figures.getFigureById", query = "SELECT f FROM Figure f WHERE f.id=:id"),
+		@NamedQuery(name = "figures.getFiguresByIdUniverse", query = "SELECT f FROM Figure f WHERE f.idUniverse = :id") })
 public class Figure {
 
 	private int id;
 	private String name;
+	private String imageURL;
 	private int idUniverse;
 
 	public Figure() {
@@ -27,16 +26,19 @@ public class Figure {
 
 	/**
 	 * @param name
+	 * @param imageURL
 	 * @param idUniverse
 	 */
-	public Figure(String name, int idUniverse) {
+	public Figure(String name, String imageURL, int idUniverse) {
 		super();
 		this.name = name;
+		this.imageURL = imageURL;
 		this.idUniverse = idUniverse;
 	}
 
 	/**
 	 * Clef primaire
+	 * 
 	 * @return the id
 	 */
 	@Id
@@ -59,6 +61,21 @@ public class Figure {
 	@Column(name = "name")
 	public String getName() {
 		return name;
+	}
+
+	/**
+	 * @return the imageURL
+	 */
+	@Column(name = "image_url")
+	public String getImageURL() {
+		return imageURL;
+	}
+
+	/**
+	 * @param imageURL the imageURL to set
+	 */
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
 	}
 
 	/**

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<Appenders>
+		<Console name="Console">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+		</Console>
+		<RollingFile name="LogFile" filePattern="${sys:catalina.base}/logs/app-%d{MM-dd-yyyy}-%i.log">
+			<Policies>
+				<OnStartupTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="1KB" />
+				<TimeBasedTriggeringPolicy />
+			</Policies>
+			<PatternLayout>
+				<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+			</PatternLayout>
+		</RollingFile>
+		<RollingFile name="REST" filePattern="${sys:catalina.base}/logs/REST/app-%d{MM-dd-yyyy}-%i.log">
+			<Policies>
+				<OnStartupTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="1KB" />
+				<TimeBasedTriggeringPolicy />
+			</Policies>
+			<PatternLayout>
+				<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+			</PatternLayout>
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+			<logger name="edu.intech.popback.services" level="DEBUG"
+	additivity="true">
+			<AppenderRef ref="REST" />
+		</logger>
+		<logger name="edu.intech.popback" level="DEBUG"
+	additivity="false">
+			<AppenderRef ref="Console" />
+		</logger>
+		<Root level="DEBUG">
+			<AppenderRef ref="LogFile" />
+		</Root>
+	</Loggers>
+</Configuration>

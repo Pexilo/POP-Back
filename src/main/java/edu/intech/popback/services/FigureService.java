@@ -2,9 +2,13 @@ package edu.intech.popback.services;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import edu.intech.popback.dao.DaoFactory;
 import edu.intech.popback.exceptions.DaoException;
 import edu.intech.popback.models.Figure;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -13,16 +17,19 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.GenericEntity;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 /**
- * Methodes pour creer et manipuler des figurines avec les requetes HTTP recues
+ * Méthodes pour créer et manipuler des figurines avec les requêtes HTTP reçues
  * par le serveur
  */
 @Path("/figure")
 public class FigureService {
+	
+	private final static Logger logger = LogManager.getLogger(FigureService.class);
 
 	/**
 	 * Renvoi une liste de toutes les figurines
@@ -32,8 +39,9 @@ public class FigureService {
 	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllFigures() throws DaoException {
+	public Response getAllFigures(@Context HttpServletRequest req) throws DaoException {
 
+		logger.debug("Figure - > getAll from : {}", req.getRemoteAddr());
 		List<Figure> figures = DaoFactory.getInstance().getFigureDao().getAllFigures();
 		final GenericEntity<List<Figure>> json = new GenericEntity<>(figures) {
 		};
