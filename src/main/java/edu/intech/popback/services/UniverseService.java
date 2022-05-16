@@ -133,17 +133,16 @@ public class UniverseService {
 	/**
 	 * Ajoute la figurine à l'univers
 	 * 
-	 * @param UniverseId l'id de l'univers sur lequel ajouter la figure
 	 * @param f la figure à ajouter
 	 * @return Le json de l'univers avec la figure ajoutée
 	 */
 	@POST
-	@Path("/{id}/addFigure")
+	@Path("/addFigure")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addFigureToUniverse(@PathParam("id") int UniverseId, Figure f) {
+	public Response addFigureToUniverse(Figure f) {
 
 		try {
-			Universe u = DaoFactory.getInstance().getUniverseDao().getUniverseById(UniverseId);
+			Universe u = DaoFactory.getInstance().getUniverseDao().getUniverseById(f.getIdUniverse());
 			u.addFigure(f);
 			DaoFactory.getInstance().getUniverseDao().updateUniverse(u);
 			return Response.ok().entity(u).build();
