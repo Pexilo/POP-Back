@@ -11,6 +11,12 @@ import edu.intech.popback.models.Figure;
 
 public class FigureDaoBdd implements IFigureDao {
 
+	/**
+	 * CrÃ©e une nouvelle figurine dans la base de données
+	 * 
+	 * @param f la figurine à créer
+	 * @return La figurine qui a été créée.
+	 */
 	@Override
 	public Figure createFigure(Figure f) throws DaoException {
 		try {
@@ -24,12 +30,23 @@ public class FigureDaoBdd implements IFigureDao {
 		}
 	}
 
+	/**
+	 * Obtenir toutes les figurines de la base de données.
+	 * 
+	 * @return Une liste de toutes les figurines.
+	 */
 	@Override
 	public List<Figure> getAllFigures() {
 		TypedQuery<Figure> query = DaoBddHelper.getEm().createNamedQuery("figures.getAllFigures", Figure.class);
 		return query.getResultList();
 	}
 
+	/**
+	 * Renvoi une figurine par son id
+	 * 
+	 * @param FigureId l'id de la figurine à renvoyer
+	 * @return La figurine correspondante à l'id.
+	 */
 	@Override
 	public Figure getFigureById(int FigureId) {
 		TypedQuery<Figure> query = DaoBddHelper.getEm().createNamedQuery("figures.getFigureById", Figure.class);
@@ -37,6 +54,12 @@ public class FigureDaoBdd implements IFigureDao {
 		return query.getSingleResult();
 	}
 
+	/**
+	 * Renvoi une liste de figurines de la base de données, associée sur l'id d'un univers
+	 * 
+	 * @param IdUniverse l'id de l'univers
+	 * @return Une liste de chiffres
+	 */
 	@Override
 	public List<Figure> getFiguresByIdUniverse(int IdUniverse) {
 		TypedQuery<Figure> query = DaoBddHelper.getEm().createNamedQuery("figures.getFiguresByIdUniverse",
@@ -45,6 +68,12 @@ public class FigureDaoBdd implements IFigureDao {
 		return query.getResultList();
 	}
 
+	/**
+	 * Met Ã  jour une figurine dans la base de données
+	 * 
+	 * @param f la figurine à mettre à jour
+	 * @return Lea figurine mise à jour.
+	 */
 	@Override
 	public Figure updateFigure(Figure f) throws DaoException {
 		try {
@@ -58,6 +87,11 @@ public class FigureDaoBdd implements IFigureDao {
 		}
 	}
 
+	/**
+	 * Supprime une figurine de la base de données
+	 * 
+	 * @param f la figurine à supprimer
+	 */
 	@Override
 	public void deleteFigure(Figure f) throws DaoException {
 		try {

@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @NamedQueries({
 	@NamedQuery(name = "figures.getAllFigures", query = "SELECT f FROM Figure f"),
 	@NamedQuery(name = "figures.getFigureById", query = "SELECT f FROM Figure f WHERE f.id=:id"),
-	@NamedQuery(name = "figures.getFiguresByIdUniverse", query = "SELECT f FROM Figure f JOIN Universe u WHERE u.id=:id")
+	@NamedQuery(name = "figures.getFiguresByIdUniverse", query = "SELECT f FROM Figure f WHERE f.idUniverse = :id")
 })
 public class Figure {
 
@@ -35,12 +35,13 @@ public class Figure {
 		this.idUniverse = idUniverse;
 	}
 
+	/**
+	 * Clef primaire
+	 * @return the id
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "id")
-	/**
-	 * @return the id
-	 */
 	public int getId() {
 		return id;
 	}
@@ -52,10 +53,10 @@ public class Figure {
 		this.id = id;
 	}
 
-	@Column(name = "name")
 	/**
 	 * @return the name
 	 */
+	@Column(name = "name")
 	public String getName() {
 		return name;
 	}
@@ -67,10 +68,10 @@ public class Figure {
 		this.name = name;
 	}
 
-	@Column(name = "id_universe")
 	/**
 	 * @return the idUniverse
 	 */
+	@Column(name = "id_universe")
 	public int getIdUniverse() {
 		return idUniverse;
 	}

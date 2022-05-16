@@ -5,6 +5,7 @@ import java.util.List;
 import edu.intech.popback.exceptions.DaoException;
 import edu.intech.popback.models.Figure;
 
+// L'interface de la classe FigureDao.
 public interface IFigureDao {
 
 	Figure createFigure(Figure f) throws DaoException;

@@ -11,7 +11,6 @@ import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -22,18 +21,35 @@ import jakarta.ws.rs.core.Response;
 @Path("/universe")
 public class UniverseService {
 
+	/**
+	 * Renvoie une liste de touts les univers
+	 * 
+	 * @return Un json des univers
+	 */
 	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllUniverses() throws DaoException {
 
-		List<Universe> figures = DaoFactory.getInstance().getUniverseDao().getAllUniverses();
-		final GenericEntity<List<Universe>> json = new GenericEntity<>(figures) {
+		List<Universe> universe = DaoFactory.getInstance().getUniverseDao().getAllUniverses();
+		
+		for(Universe u : universe) {
+            List<Figure> list = DaoFactory.getInstance().getFigureDao().getFiguresByIdUniverse(u.getId());
+            u.setFigures(list);
+        };
+        
+		final GenericEntity<List<Universe>> json = new GenericEntity<>(universe) {
 		};
 
 		return Response.ok().entity(json).build();
 	}
 
+	/**
+	 * Renvoie un univers par son id
+	 * 
+	 * @param UniverseId L'id de l'univers.
+	 * @return Un json de l'univers
+	 */
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -46,6 +62,12 @@ public class UniverseService {
 		return Response.ok().entity(json).build();
 	}
 
+	/**
+	 * Crée un univers
+	 * 
+	 * @param u L'univers a créer 
+	 * @return Le json de l'univers crée
+	 */
 	@POST
 	@Path("/create")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -62,7 +84,13 @@ public class UniverseService {
 		}
 	}
 	
-	//ça reset le tableau de figures
+	/**
+	 * Met à jour un univers
+	 * 
+	 * @param u L'univers à mettre a jour
+	 * @return Le json de l'univers mis a jour
+	 */
+	//ca reset le tableau de figures
 	@PATCH
 	@Path("/update")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -79,6 +107,12 @@ public class UniverseService {
 		}
 	}
 
+	/**
+	 * Supprime un univers
+	 * 
+	 * @param UniverseId L'id de l'univers à supprimer
+	 * @return Le json de l'univers supprimé
+	 */
 	@DELETE
 	@Path("/delete/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -96,6 +130,13 @@ public class UniverseService {
 
 	}
 	
+	/**
+	 * Ajoute la figurine à l'univers
+	 * 
+	 * @param UniverseId l'id de l'univers sur lequel ajouter la figure
+	 * @param f la figure à ajouter
+	 * @return Le json de l'univers avec la figure ajoutée
+	 */
 	@POST
 	@Path("/{id}/addFigure")
 	@Produces(MediaType.APPLICATION_JSON)

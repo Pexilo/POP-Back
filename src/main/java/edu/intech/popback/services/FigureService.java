@@ -17,9 +17,18 @@ import jakarta.ws.rs.core.GenericEntity;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+/**
+ * Methodes pour creer et manipuler des figurines avec les requetes HTTP recues
+ * par le serveur
+ */
 @Path("/figure")
 public class FigureService {
 
+	/**
+	 * Renvoi une liste de toutes les figurines
+	 * 
+	 * @return Un json de figurines
+	 */
 	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -32,6 +41,12 @@ public class FigureService {
 		return Response.ok().entity(json).build();
 	}
 
+	/**
+	 * Renvoi une figurine par son id
+	 * 
+	 * @param FigureId de la figurine
+	 * @return Un json de figurine
+	 */
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -43,8 +58,8 @@ public class FigureService {
 
 		return Response.ok().entity(json).build();
 	}
-	
-	//Le resultat n'a aucun sens marche pas encore
+
+	// Le resultat n'a aucun sens marche pas encore
 	@GET
 	@Path("/universe/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -57,6 +72,12 @@ public class FigureService {
 		return Response.ok().entity(json).build();
 	}
 
+	/**
+	 * Cree une nouvelle figurine
+	 * 
+	 * @param f La figurine a créer
+	 * @return Le json de la figurine créée
+	 */
 	@POST
 	@Path("/create")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -68,11 +89,17 @@ public class FigureService {
 			return Response.ok().entity(f).build();
 
 		} catch (DaoException e) {
-			return Response.status(Response.Status.BAD_REQUEST).entity("Couldn't create figure. Check params.\n\n" + e)
+			return Response.status(Response.Status.BAD_REQUEST).entity("Couldn't create figure. Check params." + e)
 					.build();
 		}
 	}
 
+	/**
+	 * Met a jour une figurine
+	 * 
+	 * @param f La figurine à mettre à jour
+	 * @return Le json de la figurine mise à jour
+	 */
 	@PUT
 	@Path("/update")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -84,11 +111,17 @@ public class FigureService {
 			return Response.ok().entity(f).build();
 
 		} catch (DaoException e) {
-			return Response.status(Response.Status.BAD_REQUEST).entity("Couldn't update figure. Check params.\n\n" + e)
+			return Response.status(Response.Status.BAD_REQUEST).entity("Couldn't update figure. Check params." + e)
 					.build();
 		}
 	}
 
+	/**
+	 * Supprime une figurine par son id
+	 * 
+	 * @param FigureId L'id de la figurine a supprimer
+	 * @return Le json de la figurine supprimÃ©e
+	 */
 	@DELETE
 	@Path("/delete/{id}")
 	@Produces(MediaType.APPLICATION_JSON)

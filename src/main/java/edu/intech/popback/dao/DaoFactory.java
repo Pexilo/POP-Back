@@ -13,6 +13,11 @@ public class DaoFactory {
 	
 	private DaoFactory() {}
 	
+	/**
+	 * Si l'instance est nulle, créez une nouvelle instance de DaoFactory
+	 * 
+	 * @return L'instance de la classe DaoFactory.
+	 */
 	public static DaoFactory getInstance() {
 		if (instance == null)
 			instance = new DaoFactory();

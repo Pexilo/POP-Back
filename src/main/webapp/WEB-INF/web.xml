@@ -20,7 +20,7 @@
 	</servlet-mapping>
 	<filter-mapping>
 		<filter-name>CorsFilter</filter-name>
-		<servlet-name>capi-servlet</servlet-name>
+		<servlet-name>popback-servlet</servlet-name>
 	</filter-mapping>
 	<filter>
 		<filter-name>CorsFilter</filter-name>

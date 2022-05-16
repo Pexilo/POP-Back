@@ -38,12 +38,13 @@ public class Universe {
 		this.name = name;
 	}
 
+	/**
+	* clef primaire
+	 * @return the id
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "id")
-	/**
-	 * @return the id
-	 */
 	public int getId() {
 		return id;
 	}
@@ -55,10 +56,10 @@ public class Universe {
 		this.id = id;
 	}
 
-	@Column(name = "name")
 	/**
 	 * @return the name
 	 */
+	@Column(name = "name")
 	public String getName() {
 		return name;
 	}
@@ -70,9 +71,15 @@ public class Universe {
 		this.name = name;
 	}
 
+	/* L'univers a une liste de figurines, ces figurines doivent être recupérées avec
+	* impatience (c'est-à-dire que lorsque l'univers est recupéré, les figurines doivent 
+	* également être récupérées).
+	*/
 	@OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
+	// La colonne `id_universe` dans la table `figures` est une clef etrangere qui fait reference à la colonne `id` dans la table `universes`.
 	@JoinColumn(name = "id_universe", referencedColumnName = "id")
 	/**
+	 * Liste parce que l'univers peut avoir plusieurs figurines (relation one to many)
 	 * @return the figures
 	 */
 	public List<Figure> getFigures() {
@@ -86,14 +93,21 @@ public class Universe {
 		this.figures = figures;
 	}
 	
-	//permet d'update la liste Figure
+	/**
+	 * Ajoute une figurine à la liste des figurines.
+	 * 
+	 * @param f La figurine à ajouter a la liste.
+	 */
 	public void addFigure(Figure f) {
 		this.figures.add(f);
 	}
 	
+	/**
+	 * Supprime une figurine de la liste des figurines
+	 * 
+	 * @param f Figurine à supprimer.
+	 */
 	public void removeFigure(Figure f) {
 		this.figures.remove(f);
 	}
-
-
 }
