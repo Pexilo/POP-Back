@@ -9,6 +9,7 @@ import edu.intech.popback.models.Universe;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
@@ -62,7 +63,7 @@ public class UniverseService {
 	}
 	
 	//ça reset le tableau de figures
-	@PUT
+	@PATCH
 	@Path("/update")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)

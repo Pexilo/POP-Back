@@ -4,8 +4,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 
 public class DaoBddHelper {
-	
+
 	private static EntityManager em;
+	private static DaoBddHelper instance;
 
 	public static EntityManager getEm() {
 		if (em == null) {
@@ -13,6 +14,13 @@ public class DaoBddHelper {
 		}
 		return em;
 
+	}
+
+	public static DaoBddHelper getInstance() {
+		if (instance == null) {
+			instance = new DaoBddHelper();
+		}
+		return instance;
 	}
 
 	public static void beginTransaction() {
