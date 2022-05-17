@@ -32,12 +32,7 @@ public class UniverseService {
 	public Response getAllUniverses() throws DaoException {
 
 		List<Universe> universe = DaoFactory.getInstance().getUniverseDao().getAllUniverses();
-		
-		for(Universe u : universe) {
-            List<Figure> list = DaoFactory.getInstance().getFigureDao().getFiguresByIdUniverse(u.getId());
-            u.setFigures(list);
-        };
-        
+	
 		final GenericEntity<List<Universe>> json = new GenericEntity<>(universe) {
 		};
 
@@ -98,6 +93,8 @@ public class UniverseService {
 	public Response updateUniverse(Universe u) {
 
 		try {
+			Universe universDb = DaoFactory.getInstance().getUniverseDao().getUniverseById(u.getId());
+            u = universDb.compareUpdate(u);
 			DaoFactory.getInstance().getUniverseDao().updateUniverse(u);
 			return Response.ok().entity(u).build();
 

@@ -17,10 +17,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "universes")
-@NamedQueries({
-	@NamedQuery(name = "universes.getAllUniverses", query = "SELECT u FROM Universe u"),
-	@NamedQuery(name = "universes.getUniverseById", query = "SELECT u FROM Universe u WHERE u.id=:id"),
-})
+@NamedQueries({ @NamedQuery(name = "universes.getAllUniverses", query = "SELECT u FROM Universe u JOIN FETCH Figure f"),
+		@NamedQuery(name = "universes.getUniverseById", query = "SELECT u FROM Universe u WHERE u.id=:id"), })
 public class Universe {
 
 	private int id;
@@ -41,7 +39,8 @@ public class Universe {
 	}
 
 	/**
-	* clef primaire
+	 * clef primaire
+	 * 
 	 * @return the id
 	 */
 	@Id
@@ -88,15 +87,19 @@ public class Universe {
 		this.imageURL = imageURL;
 	}
 
-	/* L'univers a une liste de figurines, ces figurines doivent être recupérées avec
-	* impatience (c'est-à-dire que lorsque l'univers est recupéré, les figurines doivent 
-	* également être récupérées).
-	*/
+	/*
+	 * L'univers a une liste de figurines, ces figurines doivent être recupérées
+	 * avec impatience (c'est-à-dire que lorsque l'univers est recupéré, les
+	 * figurines doivent également être récupérées).
+	 */
 	@OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
-	// La colonne `id_universe` dans la table `figures` est une clef etrangere qui fait reference à la colonne `id` dans la table `universes`.
+	// La colonne `id_universe` dans la table `figures` est une clef etrangere qui
+	// fait reference à la colonne `id` dans la table `universes`.
 	@JoinColumn(name = "id_universe", referencedColumnName = "id")
 	/**
-	 * Liste parce que l'univers peut avoir plusieurs figurines (relation one to many)
+	 * Liste parce que l'univers peut avoir plusieurs figurines (relation one to
+	 * many)
+	 * 
 	 * @return the figures
 	 */
 	public List<Figure> getFigures() {
@@ -109,7 +112,7 @@ public class Universe {
 	public void setFigures(List<Figure> figures) {
 		this.figures = figures;
 	}
-	
+
 	/**
 	 * Ajoute une figurine à la liste des figurines.
 	 * 
@@ -118,7 +121,7 @@ public class Universe {
 	public void addFigure(Figure f) {
 		this.figures.add(f);
 	}
-	
+
 	/**
 	 * Supprime une figurine de la liste des figurines
 	 * 
@@ -126,5 +129,16 @@ public class Universe {
 	 */
 	public void removeFigure(Figure f) {
 		this.figures.remove(f);
+	}
+
+	public Universe compareUpdate(Universe u) {
+		if (u.name == null) {
+			u.name = this.name;
+		}
+
+		if (u.figures == null || (u.figures.isEmpty() && !(this.figures.isEmpty()))) {
+			u.figures = this.figures;
+		}
+		return u;
 	}
 }
