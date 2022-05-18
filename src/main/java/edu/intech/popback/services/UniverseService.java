@@ -31,9 +31,9 @@ public class UniverseService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllUniverses() throws DaoException {
 
-		List<Universe> universe = DaoFactory.getInstance().getUniverseDao().getAllUniverses();
-	
-		final GenericEntity<List<Universe>> json = new GenericEntity<>(universe) {
+		List<Universe> univers = DaoFactory.getInstance().getUniverseDao().getAllUniverses();
+
+		final GenericEntity<List<Universe>> json = new GenericEntity<>(univers) {
 		};
 
 		return Response.ok().entity(json).build();
@@ -60,7 +60,7 @@ public class UniverseService {
 	/**
 	 * Crée un univers
 	 * 
-	 * @param u L'univers a créer 
+	 * @param u L'univers a créer
 	 * @return Le json de l'univers crée
 	 */
 	@POST
@@ -70,22 +70,23 @@ public class UniverseService {
 	public Response createUniverse(Universe u) {
 
 		try {
+
 			DaoFactory.getInstance().getUniverseDao().createUniverse(u);
 			return Response.ok().entity(u).build();
 
 		} catch (DaoException e) {
-			return Response.status(Response.Status.BAD_REQUEST).entity("Couldn't create universe. Check params.\n\n" + e)
-					.build();
+			return Response.status(Response.Status.BAD_REQUEST)
+					.entity("Couldn't create universe. Check params.\n\n" + e).build();
 		}
 	}
-	
+
 	/**
 	 * Met à jour un univers
 	 * 
 	 * @param u L'univers à mettre a jour
 	 * @return Le json de l'univers mis a jour
 	 */
-	//ca reset le tableau de figures
+	// ca reset le tableau de figures
 	@PATCH
 	@Path("/update")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -94,13 +95,13 @@ public class UniverseService {
 
 		try {
 			Universe universDb = DaoFactory.getInstance().getUniverseDao().getUniverseById(u.getId());
-            u = universDb.compareUpdate(u);
+			u = universDb.compareUpdate(u);
 			DaoFactory.getInstance().getUniverseDao().updateUniverse(u);
 			return Response.ok().entity(u).build();
 
 		} catch (DaoException e) {
-			return Response.status(Response.Status.BAD_REQUEST).entity("Couldn't update universe. Check params.\n\n" + e)
-					.build();
+			return Response.status(Response.Status.BAD_REQUEST)
+					.entity("Couldn't update universe. Check params.\n\n" + e).build();
 		}
 	}
 
@@ -121,12 +122,12 @@ public class UniverseService {
 			return Response.ok().entity(u).build();
 
 		} catch (DaoException e) {
-			return Response.status(Response.Status.BAD_REQUEST).entity("Couldn't delete universe. Check params.\n\n" + e)
-					.build();
+			return Response.status(Response.Status.BAD_REQUEST)
+					.entity("Couldn't delete universe. Check params.\n\n" + e).build();
 		}
 
 	}
-	
+
 	/**
 	 * Ajoute la figurine à l'univers
 	 * 
@@ -145,8 +146,27 @@ public class UniverseService {
 			return Response.ok().entity(u).build();
 
 		} catch (DaoException e) {
-			return Response.status(Response.Status.BAD_REQUEST).entity("Couldn't delete universe. Check params.\n\n" + e)
-					.build();
+			return Response.status(Response.Status.BAD_REQUEST)
+					.entity("Couldn't delete universe. Check params.\n\n" + e).build();
+		}
+
+	}
+
+	@DELETE
+	@Path("/removeFigure/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteFigureToUniverse(@PathParam("id") int UniverseId) {
+
+		try {
+			Figure f = DaoFactory.getInstance().getFigureDao().getFigureById(UniverseId);
+			Universe u = DaoFactory.getInstance().getUniverseDao().getUniverseById(f.getIdUniverse());
+			u.removeFigure(f);
+			DaoFactory.getInstance().getUniverseDao().updateUniverse(u);
+			return Response.ok().entity(u).build();
+
+		} catch (DaoException e) {
+			return Response.status(Response.Status.BAD_REQUEST)
+					.entity("Couldn't delete universe. Check params.\n\n" + e).build();
 		}
 
 	}

@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Table(name = "figures")
 @NamedQueries({ @NamedQuery(name = "figures.getAllFigures", query = "SELECT f FROM Figure f"),
 		@NamedQuery(name = "figures.getFigureById", query = "SELECT f FROM Figure f WHERE f.id=:id"),
-		@NamedQuery(name = "figures.getFiguresByIdUniverse", query = "SELECT f FROM Figure f WHERE f.idUniverse = :id") })
+		})
 public class Figure {
 
 	private int id;

@@ -67,19 +67,6 @@ public class FigureService {
 		return Response.ok().entity(json).build();
 	}
 
-	// Le resultat n'a aucun sens marche pas encore
-	@GET
-	@Path("/universe/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getFiguresByIdUniverse(@PathParam("id") int IdUniverse) throws DaoException {
-
-		List<Figure> figures = DaoFactory.getInstance().getFigureDao().getFiguresByIdUniverse(IdUniverse);
-		final GenericEntity<List<Figure>> json = new GenericEntity<>(figures) {
-		};
-
-		return Response.ok().entity(json).build();
-	}
-
 	/**
 	 * Cree une nouvelle figurine
 	 * 
