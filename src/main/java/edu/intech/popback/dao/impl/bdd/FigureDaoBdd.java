@@ -12,7 +12,7 @@ import edu.intech.popback.models.Figure;
 public class FigureDaoBdd implements IFigureDao {
 
 	/**
-	 * CrÃ©e une nouvelle figurine dans la base de données
+	 * Créée une nouvelle figurine dans la base de données
 	 * 
 	 * @param f la figurine à créer
 	 * @return La figurine qui a été créée.
@@ -52,20 +52,6 @@ public class FigureDaoBdd implements IFigureDao {
 		TypedQuery<Figure> query = DaoBddHelper.getEm().createNamedQuery("figures.getFigureById", Figure.class);
 		query.setParameter("id", FigureId);
 		return query.getSingleResult();
-	}
-
-	/**
-	 * Renvoi une liste de figurines de la base de données, associée sur l'id d'un univers
-	 * 
-	 * @param IdUniverse l'id de l'univers
-	 * @return Une liste de chiffres
-	 */
-	@Override
-	public List<Figure> getFiguresByIdUniverse(int IdUniverse) {
-		TypedQuery<Figure> query = DaoBddHelper.getEm().createNamedQuery("figures.getFiguresByIdUniverse",
-				Figure.class);
-		query.setParameter("id", IdUniverse);
-		return query.getResultList();
 	}
 
 	/**

@@ -2,6 +2,7 @@ package edu.intech.popback.services;
 
 import java.util.List;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,7 +25,7 @@ import jakarta.ws.rs.core.Response;
 
 /**
  * Méthodes pour créer et manipuler des figurines avec les requêtes HTTP reçues
- * par le serveur
+ * par le serveur tomcat
  */
 @Path("/figure")
 public class FigureService {
@@ -41,7 +42,7 @@ public class FigureService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllFigures(@Context HttpServletRequest req) throws DaoException {
 
-		logger.debug("Figure - > getAll from : {}", req.getRemoteAddr());
+		logger.debug("Figure - > getAllFigures from : {}", req.getRemoteAddr());
 		List<Figure> figures = DaoFactory.getInstance().getFigureDao().getAllFigures();
 		final GenericEntity<List<Figure>> json = new GenericEntity<>(figures) {
 		};
@@ -58,8 +59,9 @@ public class FigureService {
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getFigureById(@PathParam("id") int FigureId) throws DaoException {
+	public Response getFigureById(@Context HttpServletRequest req, @PathParam("id") int FigureId) throws DaoException {
 
+		logger.debug("Figure - > getFigureById from : {}", req.getRemoteAddr());
 		Figure figure = DaoFactory.getInstance().getFigureDao().getFigureById(FigureId);
 		final GenericEntity<Figure> json = new GenericEntity<>(figure) {
 		};
@@ -77,13 +79,15 @@ public class FigureService {
 	@Path("/create")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createFigure(Figure f) {
+	public Response createFigure(@Context HttpServletRequest req, Figure f) {
 
 		try {
+			logger.debug("Figure - > createFigure from : {}", req.getRemoteAddr());
 			DaoFactory.getInstance().getFigureDao().createFigure(f);
 			return Response.ok().entity(f).build();
 
 		} catch (DaoException e) {
+			logger.error(Level.ERROR, e);
 			return Response.status(Response.Status.BAD_REQUEST).entity("Couldn't create figure. Check params." + e)
 					.build();
 		}
@@ -99,13 +103,15 @@ public class FigureService {
 	@Path("/update")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateFigure(Figure f) {
+	public Response updateFigure(@Context HttpServletRequest req, Figure f) {
 
 		try {
+			logger.debug("Figure - > updateFigure from : {}", req.getRemoteAddr());
 			DaoFactory.getInstance().getFigureDao().updateFigure(f);
 			return Response.ok().entity(f).build();
 
 		} catch (DaoException e) {
+			logger.error(Level.ERROR, e);
 			return Response.status(Response.Status.BAD_REQUEST).entity("Couldn't update figure. Check params." + e)
 					.build();
 		}
@@ -120,14 +126,16 @@ public class FigureService {
 	@DELETE
 	@Path("/delete/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteFigure(@PathParam("id") int FigureId) {
+	public Response deleteFigure(@Context HttpServletRequest req, @PathParam("id") int FigureId) {
 
 		try {
+			logger.debug("Figure - > deleteFigure from : {}", req.getRemoteAddr());
 			Figure f = DaoFactory.getInstance().getFigureDao().getFigureById(FigureId);
 			DaoFactory.getInstance().getFigureDao().deleteFigure(f);
 			return Response.ok().entity(f).build();
 
 		} catch (DaoException e) {
+			logger.error(Level.ERROR, e);
 			return Response.status(Response.Status.BAD_REQUEST).entity("Couldn't delete figure. Check params.\n\n" + e)
 					.build();
 		}

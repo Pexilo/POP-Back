@@ -14,8 +14,6 @@ public interface IFigureDao {
 	
 	Figure getFigureById(int FigureId);
 	
-	List<Figure> getFiguresByIdUniverse(int IdUniverse);
-	
 	Figure updateFigure(Figure f) throws DaoException;
 	
 	void deleteFigure(Figure f) throws DaoException;

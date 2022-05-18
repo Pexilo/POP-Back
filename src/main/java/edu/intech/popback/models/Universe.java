@@ -130,15 +130,4 @@ public class Universe {
 	public void removeFigure(Figure f) {
 		this.figures.remove(f);
 	}
-
-	public Universe compareUpdate(Universe u) {
-		if (u.name == null) {
-			u.name = this.name;
-		}
-
-		if (u.figures == null || (u.figures.isEmpty() && !(this.figures.isEmpty()))) {
-			u.figures = this.figures;
-		}
-		return u;
-	}
 }

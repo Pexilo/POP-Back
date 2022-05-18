@@ -2,10 +2,15 @@ package edu.intech.popback.services;
 
 import java.util.List;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import edu.intech.popback.dao.DaoFactory;
 import edu.intech.popback.exceptions.DaoException;
 import edu.intech.popback.models.Figure;
 import edu.intech.popback.models.Universe;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -14,12 +19,15 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.GenericEntity;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 @Path("/universe")
 public class UniverseService {
+	
+	private final static Logger logger = LogManager.getLogger(FigureService.class);
 
 	/**
 	 * Renvoie une liste de touts les univers
@@ -29,8 +37,9 @@ public class UniverseService {
 	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllUniverses() throws DaoException {
+	public Response getAllUniverses(@Context HttpServletRequest req) throws DaoException {
 
+		logger.debug("Universe - > getAllUniverses from : {}", req.getRemoteAddr());
 		List<Universe> univers = DaoFactory.getInstance().getUniverseDao().getAllUniverses();
 
 		final GenericEntity<List<Universe>> json = new GenericEntity<>(univers) {
@@ -48,8 +57,9 @@ public class UniverseService {
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getUniverseById(@PathParam("id") int UniverseId) throws DaoException {
+	public Response getUniverseById(@Context HttpServletRequest req, @PathParam("id") int UniverseId) throws DaoException {
 
+		logger.debug("Universe - > getUniverseById from : {}", req.getRemoteAddr());
 		Universe universe = DaoFactory.getInstance().getUniverseDao().getUniverseById(UniverseId);
 		final GenericEntity<Universe> json = new GenericEntity<>(universe) {
 		};
@@ -58,7 +68,7 @@ public class UniverseService {
 	}
 
 	/**
-	 * Crée un univers
+	 * Créé un univers
 	 * 
 	 * @param u L'univers a créer
 	 * @return Le json de l'univers crée
@@ -67,35 +77,35 @@ public class UniverseService {
 	@Path("/create")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createUniverse(Universe u) {
+	public Response createUniverse(@Context HttpServletRequest req, Universe u) {
 
 		try {
-
+			
+			logger.debug("Universe - > createUniverse from : {}", req.getRemoteAddr());
 			DaoFactory.getInstance().getUniverseDao().createUniverse(u);
 			return Response.ok().entity(u).build();
 
 		} catch (DaoException e) {
+			logger.error(Level.ERROR, e);
 			return Response.status(Response.Status.BAD_REQUEST)
 					.entity("Couldn't create universe. Check params.\n\n" + e).build();
 		}
 	}
 
 	/**
-	 * Met à jour un univers
+	 * Mets à jour un univers
 	 * 
-	 * @param u L'univers à mettre a jour
-	 * @return Le json de l'univers mis a jour
+	 * @param u L'univers à mettre à jour
+	 * @return Le json de l'univers mis à jour
 	 */
-	// ca reset le tableau de figures
 	@PATCH
 	@Path("/update")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateUniverse(Universe u) {
+	public Response updateUniverse(@Context HttpServletRequest req, Universe u) {
 
 		try {
-			Universe universDb = DaoFactory.getInstance().getUniverseDao().getUniverseById(u.getId());
-			u = universDb.compareUpdate(u);
+			logger.debug("Universe - > updateUniverse from : {}", req.getRemoteAddr());
 			DaoFactory.getInstance().getUniverseDao().updateUniverse(u);
 			return Response.ok().entity(u).build();
 
@@ -114,14 +124,16 @@ public class UniverseService {
 	@DELETE
 	@Path("/delete/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteUniverse(@PathParam("id") int UniverseId) {
+	public Response deleteUniverse(@Context HttpServletRequest req, @PathParam("id") int UniverseId) {
 
 		try {
+			logger.debug("Universe - > deleteUniverse from : {}", req.getRemoteAddr());
 			Universe u = DaoFactory.getInstance().getUniverseDao().getUniverseById(UniverseId);
 			DaoFactory.getInstance().getUniverseDao().deleteUniverse(u);
 			return Response.ok().entity(u).build();
 
 		} catch (DaoException e) {
+			logger.error(Level.ERROR, e);
 			return Response.status(Response.Status.BAD_REQUEST)
 					.entity("Couldn't delete universe. Check params.\n\n" + e).build();
 		}
@@ -137,17 +149,19 @@ public class UniverseService {
 	@POST
 	@Path("/addFigure")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addFigureToUniverse(Figure f) {
+	public Response addFigureToUniverse(@Context HttpServletRequest req, Figure f) {
 
 		try {
+			logger.debug("Universe - > addFigureToUniverse from : {}", req.getRemoteAddr());
 			Universe u = DaoFactory.getInstance().getUniverseDao().getUniverseById(f.getIdUniverse());
 			u.addFigure(f);
 			DaoFactory.getInstance().getUniverseDao().updateUniverse(u);
 			return Response.ok().entity(u).build();
 
 		} catch (DaoException e) {
+			logger.error(Level.ERROR, e);
 			return Response.status(Response.Status.BAD_REQUEST)
-					.entity("Couldn't delete universe. Check params.\n\n" + e).build();
+					.entity("Couldn't add figure. Check params.\n\n" + e).build();
 		}
 
 	}
@@ -155,9 +169,10 @@ public class UniverseService {
 	@DELETE
 	@Path("/removeFigure/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteFigureToUniverse(@PathParam("id") int UniverseId) {
+	public Response deleteFigureToUniverse(@Context HttpServletRequest req, @PathParam("id") int UniverseId) {
 
 		try {
+			logger.debug("Universe - > deleteFigureToUniverse from : {}", req.getRemoteAddr());
 			Figure f = DaoFactory.getInstance().getFigureDao().getFigureById(UniverseId);
 			Universe u = DaoFactory.getInstance().getUniverseDao().getUniverseById(f.getIdUniverse());
 			u.removeFigure(f);
@@ -165,8 +180,9 @@ public class UniverseService {
 			return Response.ok().entity(u).build();
 
 		} catch (DaoException e) {
+			logger.error(Level.ERROR, e);
 			return Response.status(Response.Status.BAD_REQUEST)
-					.entity("Couldn't delete universe. Check params.\n\n" + e).build();
+					.entity("Couldn't delete figure. Check params.\n\n" + e).build();
 		}
 
 	}

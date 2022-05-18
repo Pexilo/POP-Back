@@ -7,7 +7,7 @@
 		<RollingFile name="LogFile" filePattern="${sys:catalina.base}/logs/app-%d{MM-dd-yyyy}-%i.log">
 			<Policies>
 				<OnStartupTriggeringPolicy />
-				<SizeBasedTriggeringPolicy size="1KB" />
+				<SizeBasedTriggeringPolicy size="1MB" />
 				<TimeBasedTriggeringPolicy />
 			</Policies>
 			<PatternLayout>
@@ -17,7 +17,7 @@
 		<RollingFile name="REST" filePattern="${sys:catalina.base}/logs/REST/app-%d{MM-dd-yyyy}-%i.log">
 			<Policies>
 				<OnStartupTriggeringPolicy />
-				<SizeBasedTriggeringPolicy size="1KB" />
+				<SizeBasedTriggeringPolicy size="1MB" />
 				<TimeBasedTriggeringPolicy />
 			</Policies>
 			<PatternLayout>
