@@ -68,7 +68,7 @@ public class UniverseService {
 	}
 
 	/**
-	 * Créé un univers
+	 * Cràà un univers
 	 * 
 	 * @param u L'univers a créer
 	 * @return Le json de l'univers crée
@@ -139,6 +139,17 @@ public class UniverseService {
 		}
 
 	}
+	
+	/*
+	 * Ces méthodes permettent de régler un problème de cache que je rencontre quand j'utilise
+	 * les méthodes create, update & delete de FigureService de mon api. Après la suppression les
+	 * données (mon tableau "figures" dans univers) ne se mets pas à jour. Le seul moyen que j'ai
+	 * trouvé est de créer une méthode dans mon modèle universe qui ajoute ou supprime une figurine
+	 * (qui va aussi mettre à jour la table figurine). C'est pas très propre mais ça fonctionne.
+	 * Encore une fois comme dis c'est lié au cache de l'api mes méthodes fonctionnent correctement,
+	 * je dois redémarrer l'api pour que mon tableau de figurines dans ma classe univers se mette à jour.
+	 * Et c'est ce tableau là qui me permete de gérer l'affichage dans mon front
+	 */
 
 	/**
 	 * Ajoute la figurine à l'univers
@@ -166,6 +177,12 @@ public class UniverseService {
 
 	}
 
+	/**
+	 * La fonction supprime une figurine d'un univers
+	 * 
+	 * @param UniverseId l'id de la figurine
+	 * @return La réponse est renvoyée.
+	 */
 	@DELETE
 	@Path("/removeFigure/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
